@@ -4,7 +4,7 @@ on:
   pull_request:
 
 env:
-  TF_CLOUD_ORGANIZATION: "postech-fiap-4soat-g01"
+  TF_CLOUD_ORGANIZATION: "postech_soat"
   TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
   TF_WORKSPACE: "aws-infrastructure-live"
   CONFIG_DIRECTORY: "./"
