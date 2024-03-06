@@ -1,7 +1,3 @@
-# Copyright (c) HashiCorp, Inc.
-# SPDX-License-Identifier: MPL-2.0
-# Fiap Pos tech
-
 terraform {
   required_providers {
     aws = {
@@ -14,14 +10,6 @@ terraform {
     }
   }
   required_version = ">= 1.1.0"
-
-  cloud {
-    organization = "postech-fiap-4soat-g01"
-
-    workspaces {
-      name = "g01-actions"
-    }
-  }
 }
 
 provider "aws" {
@@ -56,7 +44,7 @@ resource "aws_instance" "web" {
               apt-get update
               apt-get install -y apache2
               sed -i -e 's/80/8080/' /etc/apache2/ports.conf
-              echo "<style> body {background-color: black;}</style><img style="text-align:center" src="https://postech.fiap.com.br/gifs/loader.gif"><img src="https://postech.fiap.com.br/imgs/fiap-plus-alura/fiap_alura.png">" > /var/www/html/index.html
+              echo "Hello World" > /var/www/html/index.html
               systemctl restart apache2
               EOF
 }
