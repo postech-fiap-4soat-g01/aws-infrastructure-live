@@ -26,9 +26,6 @@ jobs:
         with:
           # terraform_version: 1.4.2
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-          script: |
-            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 
       - name: Terraform Format
         id: fmt
@@ -46,7 +43,7 @@ jobs:
         id: plan
         if: github.event_name == 'pull_request'
         run: terraform plan -no-color -input=false
-        continue-on-error: true
+        continue-on-error: false
 
       - name: Get Plan Output
         uses: hashicorp/tfc-workflows-github/actions/plan-output@v1.0.0
