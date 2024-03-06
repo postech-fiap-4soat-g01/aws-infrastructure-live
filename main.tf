@@ -9,7 +9,7 @@ terraform {
   cloud {
     organization = "postech_soat"
 
-    workspaces {
+  workspaces {
       name = "aws-infrastructure-live"
     }
   }
