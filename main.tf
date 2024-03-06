@@ -5,7 +5,16 @@ terraform {
       version = "5.39.1"
     }
   }
+
+  cloud {
+    organization = "postech_soat"
+
+    workspaces {
+      name = "aws-infrastructure-live"
+    }
+  }
 }
+
 
 # Configure the AWS Provider
 provider "aws" {
