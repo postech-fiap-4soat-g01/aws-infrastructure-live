@@ -21,13 +21,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # - name: Upload Configuration
-      #   uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.0
-      #   id: plan-upload
-      #   with:
-      #     workspace: ${{ env.TF_WORKSPACE }}
-      #     directory: ${{ env.CONFIG_DIRECTORY }}
-      #     speculative: true
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          # terraform_version: 1.4.2
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
 
       - name: Terraform Validate
         id: validate
