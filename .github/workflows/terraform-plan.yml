@@ -54,7 +54,7 @@ jobs:
         continue-on-error: false
 
       - name: Update PR
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         id: plan-comment
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
