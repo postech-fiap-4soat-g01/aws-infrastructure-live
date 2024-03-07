@@ -7,10 +7,10 @@ terraform {
   }
 
   cloud {
-    organization = var.organization
+    organization = "postech_soat"
 
   workspaces {
-      name = var.workspace
+      name = "aws-infrastructure-live"
     }
   }
 }
