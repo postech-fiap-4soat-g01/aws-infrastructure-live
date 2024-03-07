@@ -18,3 +18,7 @@ terraform {
 provider "aws" {
   region = var.region
 }
+
+module "cluster" {
+  source        = "./cluster/eks"
+}
