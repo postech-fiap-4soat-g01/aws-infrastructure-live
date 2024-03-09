@@ -22,3 +22,7 @@ provider "aws" {
 module "cluster" {
   source = "./cluster/eks"
 }
+
+module "rds" {
+  source = "./rds/main"
+}
