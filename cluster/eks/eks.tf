@@ -5,19 +5,6 @@ provider "kubernetes" {
 
 }
 
-module "eks-kubeconfig" {
-  source     = "hyperbadger/eks-kubeconfig/aws"
-  version    = "1.0.0"
-
-  depends_on = [module.eks]
-  cluster_id =  module.eks.cluster_id
-  }
-
-resource "local_file" "kubeconfig" {
-  content  = module.eks-kubeconfig.kubeconfig
-  filename = "kubeconfig_${var.cluster_name}"
-}
-
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 20.0"
