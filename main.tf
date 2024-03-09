@@ -20,5 +20,5 @@ provider "aws" {
 }
 
 module "cluster" {
-  source        = "./cluster/eks"
+  source = "./cluster/eks"
 }
