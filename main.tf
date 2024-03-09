@@ -24,5 +24,5 @@ module "cluster" {
 }
 
 module "rds" {
-  source = "./rds/main"
+  source = "./rds"
 }
