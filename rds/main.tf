@@ -19,7 +19,7 @@ resource "aws_db_instance" "rds-mssql" {
 
 resource "aws_db_subnet_group" "rds_db_subnet_group" {
   name       = "rds-db-subnet-group"
-  subnet_ids = [aws_subnet.subnet_a.id, aws_subnet.subnet_b.id]
+  subnet_ids = [aws_subnet.rds_subnet_a.id, aws_subnet.rds_subnet_b.id]
 
   tags = {
     Name = "My DB Subnet Group"
