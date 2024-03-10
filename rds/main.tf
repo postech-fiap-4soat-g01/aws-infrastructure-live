@@ -12,13 +12,13 @@ resource "aws_db_instance" "rds-mssql" {
   port     = 1433
 
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
-  db_subnet_group_name   = aws_db_subnet_group.my_db_subnet_group.name
+  db_subnet_group_name   = aws_db_subnet_group.rds_db_subnet_group.name
 
   skip_final_snapshot = true
 }
 
-resource "aws_db_subnet_group" "my_db_subnet_group" {
-  name       = "my-db-subnet-group"
+resource "aws_db_subnet_group" "rds_db_subnet_group" {
+  name       = "rds-db-subnet-group"
   subnet_ids = [aws_subnet.subnet_a.id, aws_subnet.subnet_b.id]
 
   tags = {
