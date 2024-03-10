@@ -1,6 +1,5 @@
 resource "aws_vpc" "eks_vpc" {
   cidr_block = "10.0.0.0/16"
-  name = "k8s-${var.cluster_name}-vpc"
 }
 
 resource "aws_subnet" "eks-private-us-east-1a" {
