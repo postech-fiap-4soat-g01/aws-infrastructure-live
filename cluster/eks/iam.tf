@@ -4,7 +4,7 @@ resource "aws_iam_policy" "worker_policy" {
 
   policy = jsonencode(
     {
-    "Version": "2024-03-07",
+    "Version": "2012-10-17",
     "Statement": [
         {
             "Effect": "Allow",
@@ -221,8 +221,7 @@ resource "aws_iam_policy" "worker_policy" {
             "Resource": "*"
         }
     ]
-  }
-  )
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "assume_role" {
