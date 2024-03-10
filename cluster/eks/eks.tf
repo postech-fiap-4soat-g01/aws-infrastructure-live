@@ -26,9 +26,13 @@ resource "aws_eks_cluster" "eks-cluster" {
   name    = "eks-${var.cluster_name}"
   role_arn = aws_iam_role.eks-iam.arn
 
-  vpc_config = {
-    aws_subnet.eks-private-us-east-1a.id,
-    aws_subnet.eks-private-us-east-1b.id
+  vpc_config {
+    subnet_ids = [
+      aws_subnet.eks-private-us-east-1a.id,
+      aws_subnet.eks-private-us-east-1b.id,
+      aws_subnet.eks-public-us-east-1a.id,
+      aws_subnet.eks-public-us-east-1b.id
+    ]
   }
 
   depends_on = [aws_iam_role_policy_attachment.eks-AmazonEKSClusterPolicy]
