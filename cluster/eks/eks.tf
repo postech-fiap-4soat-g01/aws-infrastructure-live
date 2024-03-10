@@ -23,8 +23,7 @@ resource "aws_iam_role_policy_attachment" "eks-AmazonEKSClusterPolicy" {
 }
 
 resource "aws_eks_cluster" "eks-cluster" {
-  cluster_name    = "eks-${var.cluster_name}"
-  cluster_version = "1.29"
+  name    = "eks-${var.cluster_name}"
   role_arn = aws_iam_role.eks-iam.arn
 
   vpc_config {
