@@ -28,7 +28,7 @@ resource "aws_eks_cluster" "eks-cluster" {
 
   vpc_config {
     subnet_ids = [
-      subnet_ids = aws_subnet.eks-subnet.*.id
+      aws_subnet.eks-subnet.*.id
     ]
   }
 
