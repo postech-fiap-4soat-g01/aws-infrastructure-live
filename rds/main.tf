@@ -9,7 +9,7 @@ resource "aws_db_instance" "rds-mssql" {
   allocated_storage     = 20
   max_allocated_storage = 100
 
-  port     = 1433
+  port = 1433
 
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
   db_subnet_group_name   = aws_db_subnet_group.rds_db_subnet_group.name
@@ -20,8 +20,4 @@ resource "aws_db_instance" "rds-mssql" {
 resource "aws_db_subnet_group" "rds_db_subnet_group" {
   name       = "rds-db-subnet-group"
   subnet_ids = [aws_subnet.rds_subnet_a.id, aws_subnet.rds_subnet_b.id]
-
-  tags = {
-    Name = "My DB Subnet Group"
-  }
 }
