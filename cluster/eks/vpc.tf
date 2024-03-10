@@ -12,6 +12,6 @@ resource "aws_subnet" "public" {
   vpc_id            = aws_vpc.eks_vpc.id
 
   tags = {
-    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 }
