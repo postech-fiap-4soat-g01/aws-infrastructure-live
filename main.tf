@@ -26,3 +26,7 @@ module "cluster" {
 module "rds" {
   source = "./rds"
 }
+
+module "ecr" {
+  source = "./ecr"
+}
