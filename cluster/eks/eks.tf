@@ -26,7 +26,7 @@ resource "aws_eks_cluster" "eks-cluster" {
   name    = "eks-${var.cluster_name}"
   role_arn = aws_iam_role.eks-iam.arn
 
-  vpc_config {
+  vpc_config = {
     aws_subnet.eks-private-us-east-1a.id,
     aws_subnet.eks-private-us-east-1b.id
   }
