@@ -25,7 +25,7 @@ resource "aws_iam_policy" "eks_view_resources_policy" {
       {
         Effect   = "Allow"
         Action   = "ssm:GetParameter"
-        Resource = "arn:aws:iam::653706844093:user/t_tozatto"
+        Resource = "arn:aws:ssm:*:653706844093:parameter/*"
       }
     ]
   })
