@@ -10,7 +10,7 @@ resource "aws_subnet" "eks-subnet" {
   count = 2
 
   availability_zone = data.aws_availability_zones.available.names[count.index]
-  cidr_block        = cidrsubnet(aws_vpc.example.cidr_block, 8, count.index)
+  cidr_block        = cidrsubnet(aws_vpc.eks_vpc.cidr_block, 8, count.index)
   vpc_id            = aws_vpc.eks_vpc.id
 }
 
