@@ -33,7 +33,10 @@ resource "aws_eks_node_group" "private-nodes" {
   node_group_name = "private-nodes"
   node_role_arn   = aws_iam_role.nodes.arn
 
-  subnet_ids = aws_subnet.eks-subnet.*.id
+  subnet_ids = [
+    aws_subnet.eks-private-us-east-1a.id,
+    aws_subnet.eks-private-us-east-1b.id
+    ]
 
   capacity_type  = "ON_DEMAND"
   instance_types = ["t3.small"]
