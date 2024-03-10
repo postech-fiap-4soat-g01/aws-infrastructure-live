@@ -32,15 +32,5 @@ resource "aws_eks_cluster" "eks-cluster" {
     ]
   }
 
-  eks_managed_node_groups = {
-    first = {
-      desired_capacity = 1
-      max_capacity     = 10
-      min_capacity     = 1
-
-      instance_type = var.instance_type
-    }
-  }
-
   depends_on = [aws_iam_role_policy_attachment.eks-AmazonEKSClusterPolicy]
 }
