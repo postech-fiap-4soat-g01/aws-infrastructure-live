@@ -28,11 +28,18 @@ resource "aws_eks_cluster" "eks-cluster" {
 
   vpc_config {
     subnet_ids = [
-      aws_subnet.eks-private-us-east-1a.id,
-      aws_subnet.eks-private-us-east-1b.id,
-      aws_subnet.eks-public-us-east-1a.id,
-      aws_subnet.eks-public-us-east-1b.id
+      subnet_ids = aws_subnet.eks-subnet.*.id
     ]
+  }
+
+  eks_managed_node_groups = {
+    first = {
+      desired_capacity = 1
+      max_capacity     = 10
+      min_capacity     = 1
+
+      instance_type = var.instance_type
+    }
   }
 
   depends_on = [aws_iam_role_policy_attachment.eks-AmazonEKSClusterPolicy]

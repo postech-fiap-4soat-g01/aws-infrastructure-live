@@ -11,12 +11,9 @@ resource "aws_route_table" "eks-route-table" {
   }
 }
 
-resource "aws_route_table_association" "eks-public-us-east-1a" {
-  subnet_id      = aws_subnet.eks-public-us-east-1a.id
-  route_table_id = aws_route_table.eks-route-table.id
-}
+resource "aws_route_table_association" "eks-route-table-association" {
+  count = 2
 
-resource "aws_route_table_association" "eks-public-us-east-1b" {
-  subnet_id      = aws_subnet.eks-public-us-east-1b.id
+  subnet_id      = aws_subnet.eks-subnet[count.index].id
   route_table_id = aws_route_table.eks-route-table.id
 }

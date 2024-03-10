@@ -34,8 +34,7 @@ resource "aws_eks_node_group" "private-nodes" {
   node_role_arn   = aws_iam_role.nodes.arn
 
     subnet_ids = [
-    aws_subnet.eks-private-us-east-1a.id,
-    aws_subnet.eks-private-us-east-1b.id
+    aws_subnet.[*].id
   ]
 
   capacity_type  = "ON_DEMAND"
@@ -43,8 +42,8 @@ resource "aws_eks_node_group" "private-nodes" {
 
   scaling_config {
     desired_size = 1
-    max_size     = 5
-    min_size     = 0
+    max_size     = 2
+    min_size     = 1
   }
 
   update_config {
