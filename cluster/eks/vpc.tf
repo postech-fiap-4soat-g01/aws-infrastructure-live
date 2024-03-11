@@ -1,27 +1,33 @@
 data "aws_availability_zones" "available" {
-  state = "available"
+  filter {
+    name   = "opt-in-status"
+    values = ["opt-in-not-required"]
+  }
 }
 
-resource "aws_vpc" "eks_vpc" {
-  cidr_block = "10.0.0.0/16"
-}
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "5.0.0"
 
-resource "aws_subnet" "eks-subnet" {
-  count = 2
+  name = "eks-vpc"
 
-  availability_zone = data.aws_availability_zones.available.names[count.index]
-  cidr_block        = cidrsubnet(aws_vpc.eks_vpc.cidr_block, 8, count.index)
-  vpc_id            = aws_vpc.eks_vpc.id
-}
+  cidr = "10.0.0.0/16"
+  azs  = slice(data.aws_availability_zones.available.names, 0, 3)
 
-resource "aws_subnet" "eks-private-us-east-1b" {
-  vpc_id            = aws_vpc.eks_vpc.id
-  cidr_block        = "10.0.32.0/19"
-  availability_zone = "us-east-1b"
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
 
-  tags = {
-    "Name"                            = "k8s-private-us-east-1b"
-    "kubernetes.io/role/internal-elb" = "1"
-    "kubernetes.io/cluster/demo"      = "owned"
+  enable_nat_gateway   = true
+  single_nat_gateway   = true
+  enable_dns_hostnames = true
+
+  public_subnet_tags = {
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    "kubernetes.io/role/elb"                      = 1
+  }
+
+  private_subnet_tags = {
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    "kubernetes.io/role/internal-elb"             = 1
   }
 }

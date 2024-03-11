@@ -3,5 +3,5 @@ variable "instance_type" {
 }
 
 variable "cluster_name" {
-  default = "fiap_4soat"
+  default = "eks-fiap_4soat"
 }
