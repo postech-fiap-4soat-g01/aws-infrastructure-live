@@ -7,14 +7,14 @@ variable "ecr_name" {
 variable "image_mutability" {
   description = "Provide image mutability"
   type        = string
-  default     = "IMMUTABLE"
+  default     = "MUTABLE"
 }
 
 
 variable "encrypt_type" {
   description = "Provide type of encryption here"
   type        = string
-  default     = "KMS"
+  default     = "AES256"
 }
 
 variable "tags" {
