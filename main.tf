@@ -30,3 +30,7 @@ module "rds" {
 module "ecr" {
   source = "./ecr"
 }
+
+module "dynamodb" {
+  source = "./dynamodb"
+}
