@@ -31,10 +31,6 @@ module "ecr" {
   source = "./ecr"
 }
 
-module "dynamodb" {
-  source = "./dynamodb"
-}
-
-module "lambda" {
-  source = "./lambda"
+module "dynamo_lambda" {
+  source = "./dynamo_lambda"
 }
