@@ -33,7 +33,7 @@ jobs:
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           directory: ${{ env.CONFIG_DIRECTORY }}
-          speculative: false
+          speculative: true
       
       - name: Terraform Init
         id: init
