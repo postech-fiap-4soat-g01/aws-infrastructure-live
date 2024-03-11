@@ -19,12 +19,8 @@ provider "aws" {
   region = var.region
 }
 
-module "cluster" {
-  source = "./cluster/eks"
-}
-
-module "rds" {
-  source = "./rds"
+module "cluster_rds" {
+  source = "./cluster_rds"
 }
 
 module "ecr" {
