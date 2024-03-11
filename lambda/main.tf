@@ -1,6 +1,6 @@
 # data "archive_file" "add-user" {
-#  source_file = "lambdas/create-note.js"
-#  output_path = "lambdas/create-note.zip"
+#  source_file = "lambdas/add-user.js"
+#  output_path = "lambdas/add-user.zip"
 #  type = "zip"
 # }
 
@@ -14,10 +14,33 @@
 #  timeout = 10
 #  runtime = "nodejs14.x"
 #  architectures = ["arm64"]
-#  handler = "lambdas/create-note.handler"
-#  function_name = "create-note"
+#  handler = "lambdas/add-user.handler"
+#  function_name = "add-user"
 #  role = aws_iam_role.iam_for_lambda.arn
-#  filename = "lambdas/create-note.zip"
+#  filename = "lambdas/add-user.zip"
+# }
+
+# data "archive_file" "get-user-by-cpf-or-email-archive" {
+#  source_file = "lambdas/get-user-by-cpf-or-email.js"
+#  output_path = "lambdas/get-user-by-cpf-or-email.zip"
+#  type = "zip"
+# }
+
+
+# resource "aws_lambda_function" "get-user-by-cpf-or-email" {
+#  environment {
+#    variables = {
+#      USER_TABLE = aws_dynamodb_table.user_table.name
+#    }
+#  }
+#  memory_size = "128"
+#  timeout = 10
+#  runtime = "nodejs14.x"
+#  architectures = ["arm64"]
+#  handler = "lambdas/get-user-by-cpf-or-email.handler"
+#  function_name = "get-user-by-cpf-or-email"
+#  role = aws_iam_role.iam_for_lambda.arn
+#  filename = "lambdas/get-user-by-cpf-or-email.zip"
 # }
 
 # data "archive_file" "get-all-users-archive" {
