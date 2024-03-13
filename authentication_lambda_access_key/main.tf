@@ -1,13 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
-
-
 resource "aws_iam_access_key" "fast_food_user_management_user_access" {
   user = aws_iam_user.fast_food_user_management_lambda_user.name
 }
