@@ -27,6 +27,11 @@ module "ecr" {
   source = "./ecr"
 }
 
-module "dynamo_lambda" {
-  source = "./dynamo_lambda"
+module "dynamo" {
+  source = "./dynamo"
 }
+
+module "cloudwath" {
+  source = "./cloudwatch"
+}
+
