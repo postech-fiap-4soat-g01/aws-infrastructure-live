@@ -1,7 +1,13 @@
-variable "ecr_name" {
+variable "ecr_totem_name" {
   description = "The name of the ECR registry"
   type        = any
-  default     = "ecr-fiap_4soat"
+  default     = "ecr-fast_food_totem"
+}
+
+variable "ecr_user_name" {
+  description = "The name of the ECR registry"
+  type        = any
+  default     = "ecr-fast_food_user_management"
 }
 
 variable "image_mutability" {
