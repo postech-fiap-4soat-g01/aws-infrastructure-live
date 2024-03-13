@@ -35,3 +35,7 @@ module "cloudwath" {
   source = "./cloudwatch"
 }
 
+module "cognito" {
+  source = "./cognito"
+}
+
