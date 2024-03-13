@@ -77,6 +77,7 @@ resource "aws_db_instance" "rds-mssql" {
   db_subnet_group_name   = aws_db_subnet_group.rds_db_subnet_group.name
 
   skip_final_snapshot = true
+  publicly_accessible = true
 }
 
 resource "aws_db_subnet_group" "rds_db_subnet_group" {

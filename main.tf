@@ -39,10 +39,6 @@ module "cognito" {
   source = "./cognito"
 }
 
-module "ecr_user_authentication" {
-  source = "./ecr_user_authentication"
-}
-
 module "authentication_lambda_access_key" {
   source = "./authentication_lambda_access_key"
 }
