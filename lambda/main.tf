@@ -1,72 +1,22 @@
-
-
-
-
-
-# data "archive_file" "add-user" {
-#  source_file = "lambdas/add-user.js"
-#  output_path = "lambdas/add-user.zip"
-#  type = "zip"
-# }
-
-# resource "aws_lambda_function" "add-user" {
-#  environment {
-#    variables = {
-#      USER_TABLE = aws_dynamodb_table.user_table.name
-#    }
-#  }
-#  memory_size = "128"
-#  timeout = 10
-#  runtime = "nodejs14.x"
-#  architectures = ["arm64"]
-#  handler = "lambdas/add-user.handler"
-#  function_name = "add-user"
-#  role = aws_iam_role.iam_for_lambda.arn
-#  filename = "lambdas/add-user.zip"
-# }
-
-# data "archive_file" "get-user-by-cpf-or-email-archive" {
-#  source_file = "lambdas/get-user-by-cpf-or-email.js"
-#  output_path = "lambdas/get-user-by-cpf-or-email.zip"
-#  type = "zip"
-# }
-
-
-# resource "aws_lambda_function" "get-user-by-cpf-or-email" {
-#  environment {
-#    variables = {
-#      USER_TABLE = aws_dynamodb_table.user_table.name
-#    }
-#  }
-#  memory_size = "128"
-#  timeout = 10
-#  runtime = "nodejs14.x"
-#  architectures = ["arm64"]
-#  handler = "lambdas/get-user-by-cpf-or-email.handler"
-#  function_name = "get-user-by-cpf-or-email"
-#  role = aws_iam_role.iam_for_lambda.arn
-#  filename = "lambdas/get-user-by-cpf-or-email.zip"
-# }
-
-# data "archive_file" "get-all-users-archive" {
-#  source_file = "lambdas/get-all-users.js"
-#  output_path = "lambdas/get-all-users.zip"
-#  type = "zip"
-# }
-
-
-# resource "aws_lambda_function" "get-all-users" {
-#  environment {
-#    variables = {
-#      USER_TABLE = aws_dynamodb_table.user_table.name
-#    }
-#  }
-#  memory_size = "128"
-#  timeout = 10
-#  runtime = "nodejs14.x"
-#  architectures = ["arm64"]
-#  handler = "lambdas/get-all-users.handler"
-#  function_name = "get-all-users"
-#  role = aws_iam_role.iam_for_lambda.arn
-#  filename = "lambdas/get-all-users.zip"
-# }
+resource "aws_lambda_function" "fast_food_user_management" {
+ environment {
+   variables = {
+     AWS_ACCESS_KEY_DYNAMO = var.access_key_id
+     AWS_SECRET_KEY_DYNAMO = var.secret_access_key
+     AWS_TABLE_NAME_DYNAMO = var.dynamodb_table_name
+     LOG_REGION = var.region
+     LOG_GROUP = var.log_group_name
+     AWS_USER_POOL_ID = var.cognito_user_pool_id
+     AWS_CLIENT_ID_COGNITO = var.cognito_user_pool_client_id
+     GUEST_EMAIL = var.guest_user_name
+     GUEST_IDENTIFICATION = var.guest_user_password
+   }
+ }
+ package_type = "Image"
+ memory_size = "128"
+ timeout = 60
+ architectures = ["x86_64"]
+ function_name = "FastFoodUserManagement"
+ image_uri = var.image_uri
+ role = var.lambda_role
+}
