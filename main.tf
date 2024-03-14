@@ -6,13 +6,13 @@ terraform {
     }
   }
 
-  # cloud {
-  #   organization = "postech_soat"
+  cloud {
+    organization = "postech_soat"
 
-  # workspaces {
-  #     name = "aws-infrastructure-live"
-  #   }
-  # }
+  workspaces {
+      name = "aws-infrastructure-live"
+    }
+  }
 }
 
 provider "aws" {
