@@ -50,3 +50,11 @@ resource "aws_cognito_user" "guest" {
     email_verified = true
   }
 }
+
+output "cognito_user_pool_id" {
+  value = aws_cognito_user_pool.FastFoodUsers.id
+}
+
+output "cognito_user_pool_client_id" {
+  value = aws_cognito_user_pool_client.FastFoodTotem.id
+}
