@@ -13,6 +13,7 @@ resource "aws_ecr_repository" "ecr_totem" {
   tags = var.tags
 }
 
+
 resource "aws_ecr_repository" "ecr_user" {
   name = var.ecr_user_name
 
