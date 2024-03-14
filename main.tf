@@ -6,13 +6,13 @@ terraform {
     }
   }
 
-  cloud {
-    organization = "postech_soat"
+  # cloud {
+  #   organization = "postech_soat"
 
-  workspaces {
-      name = "aws-infrastructure-live"
-    }
-  }
+  # workspaces {
+  #     name = "aws-infrastructure-live"
+  #   }
+  # }
 }
 
 provider "aws" {
@@ -39,10 +39,6 @@ module "cognito" {
   source = "./cognito"
 }
 
-module "ecr_user_authentication" {
-  source = "./ecr_user_authentication"
-}
-
 module "authentication_lambda_access_key" {
   source = "./authentication_lambda_access_key"
 }
@@ -57,7 +53,7 @@ module "lambda" {
   cognito_user_pool_id      = module.cognito.cognito_user_pool_id
   cognito_user_pool_client_id = module.cognito.cognito_user_pool_client_id
   lambda_role = module.authentication_lambda_access_key.lambda_role
-  image_uri = module.ecr_user_authentication.lambda_image
+  image_uri = module.ecr.lambda_image
 }
 
 # module "api_gateway" {
