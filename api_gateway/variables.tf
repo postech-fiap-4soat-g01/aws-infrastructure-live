@@ -1,0 +1,21 @@
+variable "api_name" {
+    default = "FastFoodTotemApi"
+    type = string
+}
+
+variable "protocol_type" {
+    default = "HTTP"
+    type = string
+}
+
+variable "region" {
+  type    = string
+  default = "us-east-1"
+}
+
+
+
+variable cognito_user_pool_client_id {}
+variable lambda_arn {}
+variable cognito_user_pool_id {}
+variable lambda_name {}

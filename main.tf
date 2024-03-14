@@ -55,6 +55,11 @@ module "lambda" {
   lambda_role = module.authentication_lambda_access_key.lambda_role
 }
 
-# module "api_gateway" {
-#   source = "./api_gateway"
-# }
+module "api_gateway" {
+  source = "./api_gateway"
+
+  cognito_user_pool_id      = module.cognito.cognito_user_pool_id
+  cognito_user_pool_client_id = module.cognito.cognito_user_pool_client_id
+  lambda_arn = module.lambda.lambda_arn
+  lambda_name = module.lambda.lambda_name
+}

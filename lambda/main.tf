@@ -45,3 +45,11 @@ resource "aws_lambda_function" "fast_food_user_management" {
  image_uri = "${aws_ecr_repository.ecr_user.repository_url}:latest"
  role = var.lambda_role
 }
+
+output "lambda_arn" {
+  value = aws_lambda_function.fast_food_user_management.invoke_arn
+}
+
+output "lambda_name" {
+  value = aws_lambda_function.fast_food_user_management.function_name
+}
