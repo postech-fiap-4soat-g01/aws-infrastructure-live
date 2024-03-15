@@ -85,7 +85,3 @@ output "security_group_id" {
 output "private_subnets_ids" {
   value = module.vpc.private_subnets
 }
-
-output "load_balancer_sg" {
-  value = data.aws_security_group.load_balancer_sg.dns_name
-}
