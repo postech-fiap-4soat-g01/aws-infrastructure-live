@@ -87,5 +87,5 @@ output "private_subnets_ids" {
 }
 
 output "load_balancer_sg" {
-  value = aws_lb.load_balancer_sg.dns_name
+  value = aws_security_group.load_balancer_sg.dns_name
 }
