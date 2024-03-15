@@ -70,6 +70,7 @@ resource "aws_db_instance" "rds-mssql" {
 
   allocated_storage     = 20
   max_allocated_storage = 20
+  storage_type = "standard" 
 
   port = 1433
 
