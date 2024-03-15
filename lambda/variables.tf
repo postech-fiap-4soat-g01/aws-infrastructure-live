@@ -1,21 +1,21 @@
 variable "region" {
-    default = "us-east-1"
-    type = string
+  default = "us-east-1"
+  type    = string
 }
 
 variable "log_group_name" {
-    default = "/FastFoodUserManagement/Logging"
-    type = string
+  default = "/FastFoodUserManagement/Logging"
+  type    = string
 }
 
 variable "guest_user_name" {
-    default = "guest@guest.com"
-    type = string
+  default = "guest@guest.com"
+  type    = string
 }
 
 variable "guest_user_password" {
-    default = "11111111111"
-    type = string
+  default = "11111111111"
+  type    = string
 }
 
 variable "tags" {

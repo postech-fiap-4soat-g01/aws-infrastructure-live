@@ -33,13 +33,13 @@ resource "aws_iam_user_policy" "fast_food_user_management_lambda_user_policy" {
 }
 
 resource "aws_iam_policy" "policy" {
-  name        = "policy"
-  policy      = data.aws_iam_policy_document.fast_food_user_management_lambda_user_policy.json
+  name   = "policy"
+  policy = data.aws_iam_policy_document.fast_food_user_management_lambda_user_policy.json
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name                 = "AdministratorAccess"
-  assume_role_policy   = data.aws_iam_policy_document.instance_assume_role_policy.json
+  name               = "AdministratorAccess"
+  assume_role_policy = data.aws_iam_policy_document.instance_assume_role_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "admin" {

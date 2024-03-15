@@ -61,12 +61,12 @@ module "eks" {
 }
 
 resource "aws_db_instance" "rds-mssql" {
-  engine            = "sqlserver-ex"
-  engine_version    = "15.00"
-  instance_class    = "db.t3.micro"
-  identifier        = "mydb"
-  username          = "dbuser"
-  password          = "dbpassword"
+  engine         = "sqlserver-ex"
+  engine_version = "15.00"
+  instance_class = "db.t3.micro"
+  identifier     = "mydb"
+  username       = "dbuser"
+  password       = "dbpassword"
 
   allocated_storage     = 10
   max_allocated_storage = 20

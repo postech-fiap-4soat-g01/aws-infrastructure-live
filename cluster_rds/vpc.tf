@@ -23,12 +23,12 @@ module "vpc" {
 
   public_subnet_tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-    "kubernetes.io/role/elb"                      = 1
+    "kubernetes.io/role/elb"                    = 1
   }
 
   private_subnet_tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb"             = 1
+    "kubernetes.io/role/internal-elb"           = 1
   }
 }
 
@@ -44,4 +44,23 @@ resource "aws_security_group" "rds_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+output "vpc_id" {
+  value = module.vpc.vpc_id
+}
+
+output "security_group_id" {
+  value = aws_security_group.rds_sg.id
+}
+
+output "private_subnets_ids" {
+  value = module.vpc.private_subnets
 }
