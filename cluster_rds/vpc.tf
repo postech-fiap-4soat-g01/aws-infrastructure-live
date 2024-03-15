@@ -53,15 +53,15 @@ resource "aws_security_group" "rds_sg" {
   }
 }
 
-# data "aws_security_group" "load_balancer_sg" {
-#   name = "fast-food-totem-svc"
-# }
-
 resource "aws_security_group" "eks_worker_sg" {
   name        = "eks-worker-sg"
   description = "Security group for EKS worker nodes"
   vpc_id      = module.vpc.vpc_id
 }
+
+# data "aws_security_group" "load_balancer_sg" {
+#   name = "fast-food-totem-svc"
+# }
 
 # resource "aws_security_group_rule" "eks_worker_ingress" {
 #   type              = "ingress"

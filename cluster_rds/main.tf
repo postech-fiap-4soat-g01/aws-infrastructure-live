@@ -68,7 +68,7 @@ resource "aws_db_instance" "rds-mssql" {
   username       = "dbuser"
   password       = "dbpassword"
 
-  allocated_storage     = 10
+  allocated_storage     = 20
   max_allocated_storage = 20
 
   port = 1433
