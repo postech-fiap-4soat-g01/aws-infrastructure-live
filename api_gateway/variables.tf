@@ -23,6 +23,4 @@ variable "cognito_user_pool_client_id" {}
 variable "lambda_arn" {}
 variable "cognito_user_pool_id" {}
 variable "lambda_name" {}
-variable "lb_dns_name" {}
-variable "aws_lb_listener_arn" {}
 variable "private_subnets_ids" {}

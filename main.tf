@@ -66,8 +66,6 @@ module "api_gateway" {
   cognito_user_pool_client_id = module.cognito.cognito_user_pool_client_id
   lambda_arn                  = module.lambda[0].lambda_arn
   lambda_name                 = module.lambda[0].lambda_name
-  lb_dns_name                 = module.load_balancer[0].lb_dns_name
-  aws_lb_listener_arn         = module.load_balancer[0].aws_lb_listener_arn
   private_subnets_ids         = module.cluster_rds.private_subnets_ids
 }
 
