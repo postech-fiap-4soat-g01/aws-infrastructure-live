@@ -98,7 +98,3 @@ resource "aws_db_subnet_group" "rds_db_subnet_group" {
   name       = "rds-db-subnet-group"
   subnet_ids = module.vpc.private_subnets
 }
-
-output "eks_cluster_arn" {
-  value = module.eks.eks_cluster_arn
-}

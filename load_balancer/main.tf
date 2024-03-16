@@ -25,11 +25,6 @@ resource "aws_lb_listener" "api_gateway_listener" {
   }
 }
 
-resource "aws_lb_target_group_attachment" "eks_nodes" {
-  target_group_arn = aws_lb_target_group.FastFoodMonolithTargetGroup.arn
-  target_id       = var.eks_cluster_arn
-}
-
 output "lb_dns_name" {
   value = aws_lb.FastFoodMonolithLB.dns_name
 }
