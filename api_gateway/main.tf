@@ -56,21 +56,34 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
   payload_format_version = "2.0"
 }
 
+# resource "aws_apigatewayv2_integration" "load_balancer_integration" {
+#   depends_on             = [aws_apigatewayv2_api.ApiGateway]
+#   api_id                 = aws_apigatewayv2_api.ApiGateway.id
+
+#   integration_type       = "HTTP_PROXY"
+#   connection_type = "VPC_LINK"
+#   integration_uri   = "aa58f90a0abf8497f84265b10a1bcd9c-244517589.us-east-1.elb.amazonaws.com"
+#   integration_method     = "ANY"
+#   payload_format_version = "1.0"
+
+#   request_parameters = {
+#     "integration.request.path.proxy"           = "method.request.path.proxy"
+#     "integration.request.header.Accept"        = "'application/json'"
+#     "integration.request.header.Authorization" = "method.request.header.Authorization"
+#   }
+# }
+
+data "aws_lb" "eks_lb" {
+  name = "your-load-balancer-name"  # Replace with the name of your load balancer from EKS
+}
+
+# Step 2: Define the integration in the API Gateway
 resource "aws_apigatewayv2_integration" "load_balancer_integration" {
-  depends_on             = [aws_apigatewayv2_api.ApiGateway]
-  api_id                 = aws_apigatewayv2_api.ApiGateway.id
-
-  integration_type       = "HTTP_PROXY"
-  connection_type = "VPC_LINK"
-  integration_uri   = "aa58f90a0abf8497f84265b10a1bcd9c-244517589.us-east-1.elb.amazonaws.com"
-  integration_method     = "ANY"
-  payload_format_version = "1.0"
-
-  request_parameters = {
-    "integration.request.path.proxy"           = "method.request.path.proxy"
-    "integration.request.header.Accept"        = "'application/json'"
-    "integration.request.header.Authorization" = "method.request.header.Authorization"
-  }
+  api_id            = aws_apigatewayv2_api.ApiGateway.id  # Replace with the ID of your API Gateway
+  integration_type  = "HTTP_PROXY"
+  integration_uri   = "http://aa58f90a0abf8497f84265b10a1bcd9c-244517589.us-east-1.elb.amazonaws.com"  # Use the DNS name of the load balancer
+  connection_type   = "INTERNET"
+  description       = "Integration to EKS load balancer"
 }
 
 ##################################### ROUTES
