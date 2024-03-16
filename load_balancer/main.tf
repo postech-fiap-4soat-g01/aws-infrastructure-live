@@ -25,6 +25,12 @@ resource "aws_lb_listener" "api_gateway_listener" {
   }
 }
 
+resource "aws_lb_target_group_attachment" "eks_nodes" {
+  count           = length(data.aws_eks_cluster.cluster.node_groups[*].instances)
+  target_group_arn = aws_lb_target_group.FastFoodMonolithTargetGroup.arn
+  target_id       = data.aws_eks_cluster.cluster.node_groups[count.index].instances[count.index].private_ip
+}
+
 output "lb_dns_name" {
   value = aws_lb.FastFoodMonolithLB.dns_name
 }
