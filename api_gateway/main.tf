@@ -73,9 +73,9 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
 #   }
 # }
 
-data "aws_lb" "eks_lb" {
-  name = "your-load-balancer-name"  # Replace with the name of your load balancer from EKS
-}
+# data "aws_lb" "eks_lb" {
+#   name = "your-load-balancer-name"  # Replace with the name of your load balancer from EKS
+# }
 
 # Step 2: Define the integration in the API Gateway
 resource "aws_apigatewayv2_integration" "load_balancer_integration" {
