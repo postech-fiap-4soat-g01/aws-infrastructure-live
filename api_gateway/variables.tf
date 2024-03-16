@@ -26,3 +26,6 @@ variable "lambda_name" {}
 variable "lb_dns_name" {}
 variable "aws_lb_listener_arn" {}
 variable "private_subnets_ids" {}
+
+variable "load_balancer_arn" {}
+variable "load_balancer_dns" {}

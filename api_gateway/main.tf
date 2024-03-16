@@ -1,3 +1,21 @@
+data "aws_lb" "fast_food_totem" {
+  name = "fast-food-totem"
+}
+
+resource "aws_api_gateway_vpc_link" "main" {
+ name = "foobar_gateway_vpclink"
+ description = "Foobar Gateway VPC Link. Managed by Terraform."
+ target_arns = [data.aws_lb.fast_food_totem.arn]
+}
+
+resource "aws_api_gateway_rest_api" "main" {
+ name = "foobar_gateway"
+ description = "Foobar Gateway used for EKS. Managed by Terraform."
+ endpoint_configuration {
+   types = ["REGIONAL"]
+ }
+}
+
 ##################################### API
 
 resource "aws_apigatewayv2_api" "ApiGateway" {
@@ -41,12 +59,20 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
 resource "aws_apigatewayv2_integration" "load_balancer_integration" {
   depends_on             = [aws_apigatewayv2_api.ApiGateway]
   api_id                 = aws_apigatewayv2_api.ApiGateway.id
-  integration_uri        = var.aws_lb_listener_arn
-  connection_id          = aws_apigatewayv2_vpc_link.vpc_link_api_to_lb.id
-  connection_type        = "VPC_LINK"
+
+  uri                     = "http://${data.aws_lb.fast_food_totem.dns_name}/{proxy}"
   integration_type       = "HTTP_PROXY"
+  connection_type = "VPC_LINK"
+  connection_id   = aws_api_gateway_vpc_link.main.id
+
   integration_method     = "ANY"
   payload_format_version = "1.0"
+
+  request_parameters = {
+    "integration.request.path.proxy"           = "method.request.path.proxy"
+    "integration.request.header.Accept"        = "'application/json'"
+    "integration.request.header.Authorization" = "method.request.header.Authorization"
+  }
 }
 
 ##################################### ROUTES
