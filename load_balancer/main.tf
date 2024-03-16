@@ -17,7 +17,7 @@ resource "aws_lb_target_group" "FastFoodMonolithTargetGroup" {
 resource "aws_lb_listener" "api_gateway_listener" {
   load_balancer_arn = aws_lb.FastFoodMonolithLB.arn
   port              = 80
-  protocol          = "HTTP"
+  protocol          = "TCP"
 
   default_action {
     type             = "forward"
