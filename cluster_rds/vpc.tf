@@ -53,28 +53,36 @@ resource "aws_security_group" "rds_sg" {
   }
 }
 
-# Retrieve the security group IDs associated with the EKS node groups
-data "aws_eks_cluster" "cluster" {
-  name = var.cluster_name
+# Retrieve the Auto Scaling Group associated with the EKS nodes
+data "aws_autoscaling_groups" "eks_node_groups" {
+  filter {
+    name   = "tag:KubernetesCluster"
+    values = [var.cluster_name]
+  }
 }
 
-data "aws_eks_node_group" "nodes" {
-  for_each = data.aws_eks_cluster.cluster.node_groups
+# Extract security group IDs from the Auto Scaling Group
+locals {
+  node_group_security_groups = [
+    for asg in data.aws_autoscaling_groups.eks_node_groups.names : asg.launch_template[0].security_group_names
+  ]
+}
 
-  cluster_name    = var.cluster_name
-  node_group_name = each.key
+# Flatten the list of security group IDs
+locals {
+  flattened_security_groups = flatten(local.node_group_security_groups)
 }
 
 # Allow inbound traffic from the EKS node groups to the RDS instance
 resource "aws_security_group_rule" "allow_eks_nodes_to_rds" {
-  for_each = data.aws_eks_node_group.nodes
+  for_each = toset(local.flattened_security_groups)
 
   type              = "ingress"
   from_port         = 1433
   to_port           = 1433
   protocol          = "tcp"
   security_group_id = aws_security_group.rds_sg.id
-  source_security_group_id = each.value.remote_access_security_group_id
+  source_security_group_id = each.value
 }
 
 output "vpc_id" {
