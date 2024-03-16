@@ -31,7 +31,9 @@ module "eks" {
 
   vpc_id                         = module.vpc.vpc_id
   subnet_ids                     = module.vpc.private_subnets
-  cluster_endpoint_public_access = true
+  
+  cluster_endpoint_private_access = true
+  cluster_endpoint_public_access  = true
 
   eks_managed_node_group_defaults = {
     ami_type = "AL2_x86_64"
@@ -41,7 +43,7 @@ module "eks" {
     one = {
       name = "node-group-1"
 
-      instance_types = ["t3.small"]
+      instance_types = ["t3.medium"]
 
       min_size     = 1
       max_size     = 2
@@ -51,7 +53,7 @@ module "eks" {
     two = {
       name = "node-group-2"
 
-      instance_types = ["t3.small"]
+      instance_types = ["t3.medium"]
 
       min_size     = 1
       max_size     = 2
@@ -63,13 +65,13 @@ module "eks" {
 resource "aws_db_instance" "rds-mssql" {
   engine         = "sqlserver-ex"
   engine_version = "15.00"
-  instance_class = "db.t3.micro"
+  instance_class = "db.t3.medium"
   identifier     = "mydb"
   username       = "dbuser"
   password       = "dbpassword"
 
-  allocated_storage     = 10
-  max_allocated_storage = 20
+  allocated_storage     = 20
+  storage_type = "standard" 
 
   port = 1433
 

@@ -1,29 +1,4 @@
-resource "aws_ecr_repository" "ecr_user" {
-  name = var.ecr_user_name
-
-  image_tag_mutability = var.image_mutability
-
-  encryption_configuration {
-    encryption_type = var.encrypt_type
-  }
-
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-
-  tags = var.tags
-}
-
-resource "null_resource" "push_image" {
-  depends_on = [aws_ecr_repository.ecr_user]
-
-  provisioner "local-exec" {
-    command = "docker pull alpine && docker tag alpine:latest ${aws_ecr_repository.ecr_user.repository_url}:latest && aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${aws_ecr_repository.ecr_user.repository_url} && docker push ${aws_ecr_repository.ecr_user.repository_url}:latest"
-  }
-}
-
 resource "aws_lambda_function" "fast_food_user_management" {
-  depends_on = [null_resource.push_image]
   environment {
     variables = {
       AWS_ACCESS_KEY_DYNAMO = var.access_key_id
@@ -42,7 +17,7 @@ resource "aws_lambda_function" "fast_food_user_management" {
   timeout       = 60
   architectures = ["x86_64"]
   function_name = "FastFoodUserManagement"
-  image_uri     = "${aws_ecr_repository.ecr_user.repository_url}:latest"
+  image_uri     = "${var.ecr_user_repository_url}:latest"
   role          = var.lambda_role
 }
 

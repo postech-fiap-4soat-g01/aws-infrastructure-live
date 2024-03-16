@@ -24,28 +24,10 @@ variable "tags" {
   default     = {}
 }
 
-variable "ecr_user_name" {
-  description = "The name of the ECR registry"
-  type        = any
-  default     = "ecr-fast_food_user_management"
-}
-
-variable "image_mutability" {
-  description = "Provide image mutability"
-  type        = string
-  default     = "MUTABLE"
-}
-
-
-variable "encrypt_type" {
-  description = "Provide type of encryption here"
-  type        = string
-  default     = "AES256"
-}
-
 variable "access_key_id" {}
 variable "secret_access_key" {}
 variable "dynamodb_table_name" {}
 variable "cognito_user_pool_id" {}
 variable "cognito_user_pool_client_id" {}
 variable "lambda_role" {}
+variable "ecr_user_repository_url" {}
