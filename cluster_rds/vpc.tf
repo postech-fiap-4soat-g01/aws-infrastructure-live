@@ -85,6 +85,17 @@ resource "aws_security_group_rule" "allow_eks_nodes_to_rds" {
   source_security_group_id = each.value
 }
 
+resource "aws_security_group_rule" "allow_eks_nodes" {
+  for_each = toset(local.flattened_security_groups)
+
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  security_group_id = aws_security_group.rds_sg.id
+  source_security_group_id = each.value
+}
+
 output "vpc_id" {
   value = module.vpc.vpc_id
 }
