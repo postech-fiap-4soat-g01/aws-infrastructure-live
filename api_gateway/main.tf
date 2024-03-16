@@ -60,7 +60,6 @@ resource "aws_apigatewayv2_integration" "load_balancer_integration" {
   depends_on             = [aws_apigatewayv2_api.ApiGateway]
   api_id                 = aws_apigatewayv2_api.ApiGateway.id
 
-  uri                     = "http://${data.aws_lb.fast_food_totem.dns_name}/{proxy}"
   integration_type       = "HTTP_PROXY"
   connection_type = "VPC_LINK"
   connection_id   = aws_api_gateway_vpc_link.main.id
