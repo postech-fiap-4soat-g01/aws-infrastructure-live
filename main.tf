@@ -40,11 +40,13 @@ module "cognito" {
 }
 
 module "authentication_lambda_access_key" {
+  count = var.create_lambda ? 1 : 0
   source = "./authentication_lambda_access_key"
 }
 
 
 module "lambda" {
+  count = var.create_lambda ? 1 : 0
   source = "./lambda"
 
   access_key_id               = module.authentication_lambda_access_key.access_key_id
@@ -56,6 +58,7 @@ module "lambda" {
 }
 
 module "api_gateway" {
+  count = var.create_lambda ? 1 : 0
   source = "./api_gateway"
 
   cognito_user_pool_id        = module.cognito.cognito_user_pool_id
@@ -68,6 +71,7 @@ module "api_gateway" {
 }
 
 module "load_balancer" {
+  count = var.create_lambda ? 1 : 0
   source = "./load_balancer"
 
   vpc_id              = module.cluster_rds.vpc_id

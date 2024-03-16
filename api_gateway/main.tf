@@ -29,14 +29,14 @@ resource "aws_apigatewayv2_vpc_link" "vpc_link_api_to_lb" {
   subnet_ids         = var.private_subnets_ids
 }
 
-# resource "aws_apigatewayv2_integration" "lambda_integration" {
-#   depends_on             = [aws_apigatewayv2_api.ApiGateway]
-#   api_id                 = aws_apigatewayv2_api.ApiGateway.id
-#   integration_type       = "AWS_PROXY"
-#   integration_method     = "POST"
-#   integration_uri        = var.lambda_arn
-#   payload_format_version = "2.0"
-# }
+resource "aws_apigatewayv2_integration" "lambda_integration" {
+  depends_on             = [aws_apigatewayv2_api.ApiGateway]
+  api_id                 = aws_apigatewayv2_api.ApiGateway.id
+  integration_type       = "AWS_PROXY"
+  integration_method     = "POST"
+  integration_uri        = var.lambda_arn
+  payload_format_version = "2.0"
+}
 
 resource "aws_apigatewayv2_integration" "load_balancer_integration" {
   depends_on             = [aws_apigatewayv2_api.ApiGateway]
@@ -69,12 +69,12 @@ resource "aws_apigatewayv2_route" "load_balancer_route_product" {
   authorization_type = "JWT"
 }
 
-# resource "aws_apigatewayv2_route" "lambda_route" {
-#   depends_on = [aws_apigatewayv2_api.ApiGateway, aws_apigatewayv2_integration.lambda_integration]
-#   api_id     = aws_apigatewayv2_api.ApiGateway.id
-#   route_key  = "ANY /User/{proxy+}"
-#   target     = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
-# }
+resource "aws_apigatewayv2_route" "lambda_route" {
+  depends_on = [aws_apigatewayv2_api.ApiGateway, aws_apigatewayv2_integration.lambda_integration]
+  api_id     = aws_apigatewayv2_api.ApiGateway.id
+  route_key  = "ANY /User/{proxy+}"
+  target     = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+}
 
 ##################################### STAGE
 
