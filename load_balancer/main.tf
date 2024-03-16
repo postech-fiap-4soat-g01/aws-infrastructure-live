@@ -9,8 +9,8 @@ resource "aws_lb" "FastFoodMonolithLB" {
 resource "aws_lb_target_group" "FastFoodMonolithTargetGroup" {
   name        = "FastFoodMonolithTargetGroup"
   port        = 80
-  protocol    = "HTTP"
-  target_type = "ip"
+  protocol    = "TCP"
+  target_type = "alb"
   vpc_id      = var.vpc_id
 }
 

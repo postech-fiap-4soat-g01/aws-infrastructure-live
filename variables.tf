@@ -5,6 +5,6 @@ variable "region" {
 
 variable "create_lambda" {
   type    = bool
-  default = true
+  default = false
 }
 
