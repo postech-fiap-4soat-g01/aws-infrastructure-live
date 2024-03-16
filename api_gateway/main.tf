@@ -84,6 +84,7 @@ resource "aws_apigatewayv2_integration" "load_balancer_integration" {
   integration_uri   = "http://aa58f90a0abf8497f84265b10a1bcd9c-244517589.us-east-1.elb.amazonaws.com"  # Use the DNS name of the load balancer
   connection_type   = "INTERNET"
   description       = "Integration to EKS load balancer"
+  integration_method = "ANY"  # Allow all HTTP methods
 }
 
 ##################################### ROUTES
