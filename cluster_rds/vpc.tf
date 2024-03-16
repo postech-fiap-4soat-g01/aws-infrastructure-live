@@ -54,16 +54,24 @@ resource "aws_security_group" "rds_sg" {
   }
 }
 
-resource "aws_security_group" "eks_sg" {
-  name_prefix = "eks-"
+data "aws_eks_cluster" "cluster" {
+  name = var.cluster_name
+}
 
-  ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    security_groups = [aws_security_group.rds_sg.id]
+output "managed_node_group_security_group_ids" {
+  value = {
+    for name, node_group in data.aws_eks_cluster.cluster.node_groups : name => node_group.remote_access_security_group_id
   }
+}
+
+resource "aws_security_group_rule" "allow-workers-nodes-communications" {
+  description              = "Allow worker nodes to communicate with database"
+  from_port                = 3306
+  protocol                 = "tcp"
+  security_group_id        = "${aws_security_group.rds_sg.id}"
+  source_security_group_id = "${output.managed_node_group_security_group_ids}"
+  to_port                  = 3306
+  type                     = "ingress"
 }
 
 output "vpc_id" {
