@@ -99,7 +99,6 @@ resource "aws_db_subnet_group" "rds_db_subnet_group" {
   subnet_ids = module.vpc.private_subnets
 }
 
-module "load_balancer" {
-  source = "./load_balancer"
-  eks_cluster_arn = module.eks.eks_cluster_arn
+output "eks_cluster_arn" {
+  value = module.eks.eks_cluster_arn
 }
