@@ -1,20 +1,20 @@
-data "aws_lb" "aa58f90a0abf8497f84265b10a1bcd9c" {
-  name = "aa58f90a0abf8497f84265b10a1bcd9c"
-}
+# data "aws_lb" "aa58f90a0abf8497f84265b10a1bcd9c" {
+#   name = "aa58f90a0abf8497f84265b10a1bcd9c"
+# }
 
-resource "aws_api_gateway_vpc_link" "main" {
- name = "foobar_gateway_vpclink"
- description = "Foobar Gateway VPC Link. Managed by Terraform."
- target_arns = [data.aws_lb.fast_food_totem.arn]
-}
+# resource "aws_api_gateway_vpc_link" "main" {
+#  name = "foobar_gateway_vpclink"
+#  description = "Foobar Gateway VPC Link. Managed by Terraform."
+#  target_arns = [data.aws_lb.aa58f90a0abf8497f84265b10a1bcd9c.arn]
+# }
 
-resource "aws_api_gateway_rest_api" "main" {
- name = "foobar_gateway"
- description = "Foobar Gateway used for EKS. Managed by Terraform."
- endpoint_configuration {
-   types = ["REGIONAL"]
- }
-}
+# resource "aws_api_gateway_rest_api" "main" {
+#  name = "foobar_gateway"
+#  description = "Foobar Gateway used for EKS. Managed by Terraform."
+#  endpoint_configuration {
+#    types = ["REGIONAL"]
+#  }
+# }
 
 ##################################### API
 
@@ -62,8 +62,7 @@ resource "aws_apigatewayv2_integration" "load_balancer_integration" {
 
   integration_type       = "HTTP_PROXY"
   connection_type = "VPC_LINK"
-  connection_id   = aws_api_gateway_vpc_link.main.id
-
+  integration_uri   = "aa58f90a0abf8497f84265b10a1bcd9c-244517589.us-east-1.elb.amazonaws.com"
   integration_method     = "ANY"
   payload_format_version = "1.0"
 
