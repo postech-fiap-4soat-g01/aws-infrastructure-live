@@ -49,12 +49,12 @@ module "lambda" {
   count = var.create_lambda ? 1 : 0
   source = "./lambda"
 
-  access_key_id               = module.authentication_lambda_access_key.access_key_id
-  secret_access_key           = module.authentication_lambda_access_key.secret_access_key
+  access_key_id               = module.authentication_lambda_access_key[0].access_key_id
+  secret_access_key           = module.authentication_lambda_access_key[0].secret_access_key
   dynamodb_table_name         = module.dynamo.dynamodb_table_name
   cognito_user_pool_id        = module.cognito.cognito_user_pool_id
   cognito_user_pool_client_id = module.cognito.cognito_user_pool_client_id
-  lambda_role                 = module.authentication_lambda_access_key.lambda_role
+  lambda_role                 = module.authentication_lambda_access_key[0].lambda_role
   ecr_user_repository_url     = aws_ecr_repository.ecr_user.repository_url
 }
 
