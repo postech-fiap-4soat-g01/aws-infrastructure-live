@@ -85,12 +85,13 @@ resource "aws_db_subnet_group" "rds_db_subnet_group" {
   subnet_ids = module.vpc.private_subnets
 }
 
-resource "aws_security_group_rule" "allow-workers-nodes-communications" {
-  description              = "Allow worker nodes to communicate with database"
-  from_port                = 3306
-  protocol                 = "tcp"
-  security_group_id        = "${aws_security_group.rds_sg.id}"
-  source_security_group_id = "${module.eks.cluster_security_group_id}"
-  to_port                  = 3306
-  type                     = "ingress"
+resource "aws_security_group_rule" "allow_eks_nodes_to_rds" {
+  for_each = module.eks.eks_managed_node_groups
+
+  type              = "ingress"
+  from_port         = 1433
+  to_port           = 1433
+  protocol          = "tcp"
+  security_group_id = aws_security_group.rds_sg.id
+  source_security_group_id = each.value.remote_access_security_group_id
 }
