@@ -37,12 +37,11 @@ resource "aws_security_group" "rds_sg" {
 
   vpc_id = module.vpc.vpc_id
 
-  # Add any additional ingress/egress rules as needed
   ingress {
-    from_port   = 3306
-    to_port     = 3306
+    from_port   = 1433
+    to_port     = 1433
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"] # Allow inbound traffic from any IP address.
   }
 
   ingress {
@@ -52,6 +51,30 @@ resource "aws_security_group" "rds_sg" {
     cidr_blocks = ["0.0.0.0/0"]
     
   }
+}
+
+# Retrieve the security group IDs associated with the EKS node groups
+data "aws_eks_cluster" "cluster" {
+  name = var.cluster_name
+}
+
+data "aws_eks_node_group" "nodes" {
+  for_each = data.aws_eks_cluster.cluster.node_groups
+
+  cluster_name    = var.cluster_name
+  node_group_name = each.key
+}
+
+# Allow inbound traffic from the EKS node groups to the RDS instance
+resource "aws_security_group_rule" "allow_eks_nodes_to_rds" {
+  for_each = data.aws_eks_node_group.nodes
+
+  type              = "ingress"
+  from_port         = 1433
+  to_port           = 1433
+  protocol          = "tcp"
+  security_group_id = aws_security_group.rds_sg.id
+  source_security_group_id = each.value.remote_access_security_group_id
 }
 
 output "vpc_id" {

@@ -84,14 +84,3 @@ resource "aws_db_subnet_group" "rds_db_subnet_group" {
   name       = "rds-db-subnet-group"
   subnet_ids = module.vpc.private_subnets
 }
-
-resource "aws_security_group_rule" "allow_eks_nodes_to_rds" {
-  for_each = module.eks.eks_managed_node_groups
-
-  type              = "ingress"
-  from_port         = 1433
-  to_port           = 1433
-  protocol          = "tcp"
-  security_group_id = aws_security_group.rds_sg.id
-  source_security_group_id = each.value.remote_access_security_group_id
-}
