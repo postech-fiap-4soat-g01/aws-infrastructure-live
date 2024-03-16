@@ -35,12 +35,22 @@ module "vpc" {
 resource "aws_security_group" "rds_sg" {
   name_prefix = "rds-"
 
+  vpc_id = module.vpc.vpc_id
+
+  # Add any additional ingress/egress rules as needed
   ingress {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    security_groups = [aws_security_group.eks_sg.id]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    
   }
 }
 
@@ -54,6 +64,16 @@ resource "aws_security_group" "eks_sg" {
     cidr_blocks = ["0.0.0.0/0"]
     security_groups = [aws_security_group.rds_sg.id]
   }
+}
+
+resource "aws_security_group_rule" "allow-workers-nodes-communications" {
+  description              = "Allow worker nodes to communicate with database"
+  from_port                = 5432
+  protocol                 = "tcp"
+  security_group_id        = "${aws_security_group.rds_sg.id}"
+  source_security_group_id = "${module.eks.worker_security_group_id}"
+  to_port                  = 5432
+  type                     = "ingress"
 }
 
 output "vpc_id" {
