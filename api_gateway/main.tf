@@ -1,4 +1,4 @@
-data "aws_lb" "fast_food_totem" {
+data "aws_lb" "aa58f90a0abf8497f84265b10a1bcd9c" {
   name = "aa58f90a0abf8497f84265b10a1bcd9c"
 }
 
