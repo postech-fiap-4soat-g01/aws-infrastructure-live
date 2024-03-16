@@ -90,7 +90,7 @@ resource "aws_security_group_rule" "allow-workers-nodes-communications" {
   from_port                = 3306
   protocol                 = "tcp"
   security_group_id        = "${aws_security_group.rds_sg.id}"
-  source_security_group_id = "${module.eks.worker_security_group_id}"
+  source_security_group_id = "${module.eks.eks_managed_node_groups.one.security_group_id}"
   to_port                  = 3306
   type                     = "ingress"
 }
