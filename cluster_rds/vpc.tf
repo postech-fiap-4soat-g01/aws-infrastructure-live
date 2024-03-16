@@ -35,21 +35,24 @@ module "vpc" {
 resource "aws_security_group" "rds_sg" {
   name_prefix = "rds-"
 
-  vpc_id = module.vpc.vpc_id
-
-  # Add any additional ingress/egress rules as needed
   ingress {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.eks_sg.id]
   }
+}
+
+resource "aws_security_group" "eks_sg" {
+  name_prefix = "eks-"
 
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 3306
+    to_port     = 3306
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.rds_sg.id]
   }
 }
 
