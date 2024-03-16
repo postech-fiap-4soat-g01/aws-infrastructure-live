@@ -63,7 +63,7 @@ module "eks" {
 resource "aws_db_instance" "rds-mssql" {
   engine         = "sqlserver-ex"
   engine_version = "15.00"
-  instance_class = "db.t3.micro"
+  instance_class = "db.t3.medium"
   identifier     = "mydb"
   username       = "dbuser"
   password       = "dbpassword"

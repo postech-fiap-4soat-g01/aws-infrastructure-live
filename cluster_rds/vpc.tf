@@ -53,25 +53,6 @@ resource "aws_security_group" "rds_sg" {
   }
 }
 
-resource "aws_security_group" "eks_worker_sg" {
-  name        = "eks-worker-sg"
-  description = "Security group for EKS worker nodes"
-  vpc_id      = module.vpc.vpc_id
-}
-
-# data "aws_security_group" "load_balancer_sg" {
-#   name = "fast-food-totem-svc"
-# }
-
-# resource "aws_security_group_rule" "eks_worker_ingress" {
-#   type              = "ingress"
-#   from_port         = 80
-#   to_port           = 80
-#   protocol          = "tcp"
-#   security_group_id = aws_security_group.eks_worker_sg.id
-#   source_security_group_id = data.aws_security_group.load_balancer_sg.id
-# }
-
 output "vpc_id" {
   value = module.vpc.vpc_id
 }
