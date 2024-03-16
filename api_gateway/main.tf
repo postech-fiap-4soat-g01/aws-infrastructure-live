@@ -1,5 +1,5 @@
 data "aws_lb" "fast_food_totem" {
-  name = "fast-food-totem"
+  name = "aa58f90a0abf8497f84265b10a1bcd9c"
 }
 
 resource "aws_api_gateway_vpc_link" "main" {
