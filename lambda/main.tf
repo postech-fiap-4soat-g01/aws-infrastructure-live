@@ -17,7 +17,7 @@ resource "aws_lambda_function" "fast_food_user_management" {
   timeout       = 60
   architectures = ["x86_64"]
   function_name = "FastFoodUserManagement"
-  image_uri     = "${data.terraform_remote_state.ecr.outputs.ecr_user_repository_url}:latest"
+  image_uri     = "${var.ecr_user_repository_url}:latest"
   role          = var.lambda_role
 }
 
