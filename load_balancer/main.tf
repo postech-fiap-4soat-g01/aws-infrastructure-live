@@ -1,7 +1,7 @@
 resource "aws_lb" "FastFoodMonolithLB" {
   name               = "FastFoodMonolithLB"
-  internal           = false
-  load_balancer_type = "network"
+  internal           = true
+  load_balancer_type = "application"
   security_groups    = [var.security_group_id]
   subnets            = var.private_subnets_ids
 
@@ -11,7 +11,7 @@ resource "aws_lb" "FastFoodMonolithLB" {
 resource "aws_lb_target_group" "FastFoodMonolithTargetGroup" {
   name        = "FastFoodMonolithTargetGroup"
   port        = 80
-  protocol    = "TCP"
+  protocol = "HTTP"
   target_type = "ip"
   vpc_id      = var.vpc_id
 }
@@ -19,7 +19,7 @@ resource "aws_lb_target_group" "FastFoodMonolithTargetGroup" {
 resource "aws_lb_listener" "api_gateway_listener" {
   load_balancer_arn = aws_lb.FastFoodMonolithLB.arn
   port              = 80
-  protocol          = "TCP"
+  protocol = "HTTP"
 
   default_action {
     type             = "forward"
