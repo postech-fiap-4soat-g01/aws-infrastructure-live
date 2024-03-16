@@ -78,5 +78,4 @@ module "load_balancer" {
   vpc_id              = module.cluster_rds.vpc_id
   security_group_id   = module.cluster_rds.security_group_id
   private_subnets_ids = module.cluster_rds.private_subnets_ids
-  eks_cluster_arn = module.cluster_rds.eks_cluster_arn
 }
