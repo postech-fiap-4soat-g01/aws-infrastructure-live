@@ -45,10 +45,6 @@ resource "aws_apigatewayv2_integration" "load_balancer_integration" {
   connection_type   = "INTERNET"
   description       = "Integration to EKS load balancer"
   integration_method = "ANY"
-
-   request_parameters = {
-    "type" = "$request.path.type"
-  }
 }
 
 ##################################### ROUTES
