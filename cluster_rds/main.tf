@@ -46,17 +46,7 @@ module "eks" {
       instance_types = ["t3.medium"]
 
       min_size     = 1
-      max_size     = 2
-      desired_size = 1
-    }
-
-    two = {
-      name = "node-group-2"
-
-      instance_types = ["t3.medium"]
-
-      min_size     = 1
-      max_size     = 2
+      max_size     = 1
       desired_size = 1
     }
   }
@@ -65,13 +55,13 @@ module "eks" {
 resource "aws_db_instance" "rds-mssql" {
   engine         = "sqlserver-ex"
   engine_version = "15.00"
-  instance_class = "db.t3.medium"
+  instance_class = "db.t3.micro"
   identifier     = "mydb"
   username       = "dbuser"
   password       = "dbpassword"
 
   allocated_storage     = 20
-  storage_type = "standard" 
+  storage_type = "gp2" 
 
   port = 1433
 
@@ -80,6 +70,7 @@ resource "aws_db_instance" "rds-mssql" {
 
   skip_final_snapshot = true
   publicly_accessible = true
+  multi_az            = false
 }
 
 resource "aws_db_subnet_group" "rds_db_subnet_group" {

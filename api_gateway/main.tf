@@ -25,7 +25,7 @@ resource "aws_apigatewayv2_authorizer" "jwt_authorizer" {
 
 resource "aws_apigatewayv2_vpc_link" "vpc_link_api_to_lb" {
   name               = "vpc_link_api_to_lb"
-  security_group_ids = []
+  security_group_ids = [var.security_group_id]
   subnet_ids         = var.private_subnets_ids
 }
 
@@ -39,14 +39,12 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
 }
 
 resource "aws_apigatewayv2_integration" "load_balancer_integration" {
-  depends_on             = [aws_apigatewayv2_api.ApiGateway]
-  api_id                 = aws_apigatewayv2_api.ApiGateway.id
-  integration_uri        = var.aws_lb_listener_arn
-  connection_id          = aws_apigatewayv2_vpc_link.vpc_link_api_to_lb.id
-  connection_type        = "VPC_LINK"
-  integration_type       = "HTTP_PROXY"
-  integration_method     = "ANY"
-  payload_format_version = "1.0"
+  api_id            = aws_apigatewayv2_api.ApiGateway.id
+  integration_type  = "HTTP_PROXY"
+  integration_uri   = var.integration_uri_lb
+  connection_type   = "INTERNET"
+  description       = "Integration to EKS load balancer"
+  integration_method = "ANY"
 }
 
 ##################################### ROUTES

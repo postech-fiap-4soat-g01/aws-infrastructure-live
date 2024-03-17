@@ -66,16 +66,7 @@ module "api_gateway" {
   cognito_user_pool_client_id = module.cognito.cognito_user_pool_client_id
   lambda_arn                  = module.lambda[0].lambda_arn
   lambda_name                 = module.lambda[0].lambda_name
-  lb_dns_name                 = module.load_balancer[0].lb_dns_name
-  aws_lb_listener_arn         = module.load_balancer[0].aws_lb_listener_arn
   private_subnets_ids         = module.cluster_rds.private_subnets_ids
-}
-
-module "load_balancer" {
-  count = var.create_lambda ? 1 : 0
-  source = "./load_balancer"
-
-  vpc_id              = module.cluster_rds.vpc_id
-  security_group_id   = module.cluster_rds.security_group_id
-  private_subnets_ids = module.cluster_rds.private_subnets_ids
+  security_group_id           = module.cluster_rds.security_group_id
+  integration_uri_lb          = var.integration_uri_lb
 }
