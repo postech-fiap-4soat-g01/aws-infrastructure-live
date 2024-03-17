@@ -58,19 +58,10 @@ resource "aws_apigatewayv2_route" "load_balancer_route_order" {
   authorization_type = "JWT"
 }
 
-# resource "aws_apigatewayv2_route" "load_balancer_route_product" {
-#   depends_on         = [aws_apigatewayv2_integration.load_balancer_integration]
-#   api_id             = aws_apigatewayv2_api.ApiGateway.id
-#   route_key          = "ANY /v${var.api_version}/product/{proxy+}"
-#   target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration.id}"
-#   authorizer_id      = aws_apigatewayv2_authorizer.jwt_authorizer.id
-#   authorization_type = "JWT"
-# }
-
 resource "aws_apigatewayv2_route" "load_balancer_route_product" {
   depends_on         = [aws_apigatewayv2_integration.load_balancer_integration]
   api_id             = aws_apigatewayv2_api.ApiGateway.id
-  route_key          = "GET /v1/product/category/{type}"
+  route_key          = "ANY /v${var.api_version}/product/{proxy+}"
   target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration.id}"
   authorizer_id      = aws_apigatewayv2_authorizer.jwt_authorizer.id
   authorization_type = "JWT"
