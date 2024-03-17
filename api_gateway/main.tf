@@ -1,21 +1,3 @@
-# data "aws_lb" "aa58f90a0abf8497f84265b10a1bcd9c" {
-#   name = "aa58f90a0abf8497f84265b10a1bcd9c"
-# }
-
-# resource "aws_api_gateway_vpc_link" "main" {
-#  name = "foobar_gateway_vpclink"
-#  description = "Foobar Gateway VPC Link. Managed by Terraform."
-#  target_arns = [data.aws_lb.aa58f90a0abf8497f84265b10a1bcd9c.arn]
-# }
-
-# resource "aws_api_gateway_rest_api" "main" {
-#  name = "foobar_gateway"
-#  description = "Foobar Gateway used for EKS. Managed by Terraform."
-#  endpoint_configuration {
-#    types = ["REGIONAL"]
-#  }
-# }
-
 ##################################### API
 
 resource "aws_apigatewayv2_api" "ApiGateway" {
@@ -41,14 +23,8 @@ resource "aws_apigatewayv2_authorizer" "jwt_authorizer" {
 
 ##################################### INTEGRATION
 
-# resource "aws_apigatewayv2_vpc_link" "vpc_link_api_to_lb" {
-#   name               = "vpc_link_api_to_lb"
-#   security_group_ids = [var.segurity_group_ids]
-#   subnet_ids         = var.private_subnets_ids
-# }
-
 resource "aws_apigatewayv2_vpc_link" "vpc_link_api_to_lb" {
-  name               = "eks"
+  name               = "vpc_link_api_to_lb"
   security_group_ids = [var.security_group_id]
   subnet_ids         = var.private_subnets_ids
 }
@@ -62,16 +38,16 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
   payload_format_version = "2.0"
 }
 
-resource "aws_apigatewayv2_integration" "load_balancer_integration" {
-  depends_on             = [aws_apigatewayv2_api.ApiGateway]
-  api_id = aws_apigatewayv2_api.ApiGateway.id
+# resource "aws_apigatewayv2_integration" "load_balancer_integration" {
+#   depends_on             = [aws_apigatewayv2_api.ApiGateway]
+#   api_id = aws_apigatewayv2_api.ApiGateway.id
 
-  integration_uri    = "arn:aws:elasticloadbalancing:us-east-1:653706844093:loadbalancer/net/test/ee67e55331624668"
-  integration_type   = "HTTP_PROXY"
-  integration_method = "ANY"
-  connection_type    = "VPC_LINK"
-  connection_id      = aws_apigatewayv2_vpc_link.vpc_link_api_to_lb.id
-}
+#   integration_uri    = "arn:aws:elasticloadbalancing:us-east-1:653706844093:loadbalancer/net/test/ee67e55331624668"
+#   integration_type   = "HTTP_PROXY"
+#   integration_method = "ANY"
+#   connection_type    = "VPC_LINK"
+#   connection_id      = aws_apigatewayv2_vpc_link.vpc_link_api_to_lb.id
+# }
 
 # resource "aws_apigatewayv2_integration" "load_balancer_integration" {
 #   depends_on             = [aws_apigatewayv2_api.ApiGateway]
@@ -82,31 +58,24 @@ resource "aws_apigatewayv2_integration" "load_balancer_integration" {
 #   integration_uri   = "aa58f90a0abf8497f84265b10a1bcd9c-244517589.us-east-1.elb.amazonaws.com"
 #   integration_method     = "ANY"
 #   payload_format_version = "1.0"
-
-#   request_parameters = {
-#     "integration.request.path.proxy"           = "method.request.path.proxy"
-#     "integration.request.header.Accept"        = "'application/json'"
-#     "integration.request.header.Authorization" = "method.request.header.Authorization"
-#   }
 # }
 
 # data "aws_lb" "eks_lb" {
 #   name = "your-load-balancer-name"  # Replace with the name of your load balancer from EKS
 # }
 
-# Step 2: Define the integration in the API Gateway
-# resource "aws_apigatewayv2_integration" "load_balancer_integration" {
-#   api_id            = aws_apigatewayv2_api.ApiGateway.id  # Replace with the ID of your API Gateway
-#   integration_type  = "HTTP_PROXY"
-#   integration_uri   = "http://aa58f90a0abf8497f84265b10a1bcd9c-244517589.us-east-1.elb.amazonaws.com"  # Use the DNS name of the load balancer
-#   connection_type   = "INTERNET"
-#   description       = "Integration to EKS load balancer"
-#   integration_method = "ANY"  # Allow all HTTP methods
+resource "aws_apigatewayv2_integration" "load_balancer_integration" {
+  api_id            = aws_apigatewayv2_api.ApiGateway.id  # Replace with the ID of your API Gateway
+  integration_type  = "HTTP_PROXY"
+  integration_uri   = "http://aa58f90a0abf8497f84265b10a1bcd9c-244517589.us-east-1.elb.amazonaws.com"  # Use the DNS name of the load balancer
+  connection_type   = "INTERNET"
+  description       = "Integration to EKS load balancer"
+  integration_method = "ANY"  # Allow all HTTP methods
 
-#   request_parameters = {
-#     "integration.request.path.proxy"           = "method.request.path.proxy"
-#   }
-# }
+  request_parameters = {
+    "integration.request.path.proxy"           = "method.request.path.proxy"
+  }
+}
 
 ##################################### ROUTES
 
