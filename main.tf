@@ -69,12 +69,3 @@ module "api_gateway" {
   private_subnets_ids         = module.cluster_rds.private_subnets_ids
   security_group_id   = module.cluster_rds.security_group_id
 }
-
-# module "load_balancer" {
-#   count = var.create_lambda ? 1 : 0
-#   source = "./load_balancer"
-
-#   vpc_id              = module.cluster_rds.vpc_id
-#   security_group_id   = module.cluster_rds.security_group_id
-#   private_subnets_ids = module.cluster_rds.private_subnets_ids
-# }

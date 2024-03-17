@@ -38,39 +38,13 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
   payload_format_version = "2.0"
 }
 
-# resource "aws_apigatewayv2_integration" "load_balancer_integration" {
-#   depends_on             = [aws_apigatewayv2_api.ApiGateway]
-#   api_id = aws_apigatewayv2_api.ApiGateway.id
-
-#   integration_uri    = "arn:aws:elasticloadbalancing:us-east-1:653706844093:loadbalancer/net/test/ee67e55331624668"
-#   integration_type   = "HTTP_PROXY"
-#   integration_method = "ANY"
-#   connection_type    = "VPC_LINK"
-#   connection_id      = aws_apigatewayv2_vpc_link.vpc_link_api_to_lb.id
-# }
-
-# resource "aws_apigatewayv2_integration" "load_balancer_integration" {
-#   depends_on             = [aws_apigatewayv2_api.ApiGateway]
-#   api_id                 = aws_apigatewayv2_api.ApiGateway.id
-
-#   integration_type       = "HTTP_PROXY"
-#   connection_type = "VPC_LINK"
-#   integration_uri   = "aa58f90a0abf8497f84265b10a1bcd9c-244517589.us-east-1.elb.amazonaws.com"
-#   integration_method     = "ANY"
-#   payload_format_version = "1.0"
-# }
-
-# data "aws_lb" "eks_lb" {
-#   name = "your-load-balancer-name"  # Replace with the name of your load balancer from EKS
-# }
-
 resource "aws_apigatewayv2_integration" "load_balancer_integration" {
-  api_id            = aws_apigatewayv2_api.ApiGateway.id  # Replace with the ID of your API Gateway
+  api_id            = aws_apigatewayv2_api.ApiGateway.id
   integration_type  = "HTTP_PROXY"
-  integration_uri   = "http://aa58f90a0abf8497f84265b10a1bcd9c-244517589.us-east-1.elb.amazonaws.com"  # Use the DNS name of the load balancer
+  integration_uri   = "http://aa58f90a0abf8497f84265b10a1bcd9c-244517589.us-east-1.elb.amazonaws.com"
   connection_type   = "INTERNET"
   description       = "Integration to EKS load balancer"
-  integration_method = "ANY"  # Allow all HTTP methods
+  integration_method = "ANY"
 }
 
 ##################################### ROUTES
