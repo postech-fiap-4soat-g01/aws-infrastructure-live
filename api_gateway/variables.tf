@@ -25,3 +25,4 @@ variable "cognito_user_pool_id" {}
 variable "lambda_name" {}
 variable "private_subnets_ids" {}
 variable "security_group_id" {}
+variable "integration_uri_lb" {}

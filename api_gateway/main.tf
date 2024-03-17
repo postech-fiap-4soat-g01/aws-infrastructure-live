@@ -41,7 +41,7 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
 resource "aws_apigatewayv2_integration" "load_balancer_integration" {
   api_id            = aws_apigatewayv2_api.ApiGateway.id
   integration_type  = "HTTP_PROXY"
-  integration_uri   = "http://aa58f90a0abf8497f84265b10a1bcd9c-244517589.us-east-1.elb.amazonaws.com"
+  integration_uri   = var.integration_uri_lb
   connection_type   = "INTERNET"
   description       = "Integration to EKS load balancer"
   integration_method = "ANY"
@@ -58,10 +58,19 @@ resource "aws_apigatewayv2_route" "load_balancer_route_order" {
   authorization_type = "JWT"
 }
 
+# resource "aws_apigatewayv2_route" "load_balancer_route_product" {
+#   depends_on         = [aws_apigatewayv2_integration.load_balancer_integration]
+#   api_id             = aws_apigatewayv2_api.ApiGateway.id
+#   route_key          = "ANY /v${var.api_version}/product/{proxy+}"
+#   target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration.id}"
+#   authorizer_id      = aws_apigatewayv2_authorizer.jwt_authorizer.id
+#   authorization_type = "JWT"
+# }
+
 resource "aws_apigatewayv2_route" "load_balancer_route_product" {
   depends_on         = [aws_apigatewayv2_integration.load_balancer_integration]
   api_id             = aws_apigatewayv2_api.ApiGateway.id
-  route_key          = "ANY /v${var.api_version}/product/{proxy+}"
+  route_key          = "GET /v1/product/category/{type}"
   target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration.id}"
   authorizer_id      = aws_apigatewayv2_authorizer.jwt_authorizer.id
   authorization_type = "JWT"

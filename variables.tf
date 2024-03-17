@@ -5,6 +5,11 @@ variable "region" {
 
 variable "create_lambda" {
   type    = bool
-  default = true
+  default = false
+}
+
+variable "integration_uri_lb" {
+  type    = string
+  default = ""
 }
 
