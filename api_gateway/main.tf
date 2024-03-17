@@ -88,8 +88,6 @@ resource "aws_apigatewayv2_integration" "load_balancer_integration" {
 
   request_parameters = {
     "integration.request.path.proxy"           = "method.request.path.proxy"
-    "integration.request.header.Accept"        = "'application/json'"
-    "integration.request.header.Authorization" = "method.request.header.Authorization"
   }
 }
 
