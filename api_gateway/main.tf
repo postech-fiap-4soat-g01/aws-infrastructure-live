@@ -46,7 +46,7 @@ resource "aws_apigatewayv2_integration" "load_balancer_integration" {
   description       = "Integration to EKS load balancer"
   integration_method = "ANY"
 
-   integration_parameters = {
+   request_parameters = {
     "integration.request.querystring.proxy" = "$request.querystring.proxy"
   }
 }
