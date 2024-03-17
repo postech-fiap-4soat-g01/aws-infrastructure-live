@@ -91,6 +91,10 @@ resource "aws_apigatewayv2_route" "load_balancer_route_product" {
   target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration.id}"
   authorizer_id      = aws_apigatewayv2_authorizer.jwt_authorizer.id
   authorization_type = "JWT"
+
+  request_parameters {
+    "integration.request.querystring.proxy" = "method.request.querystring.proxy"  # Forward query parameters to the integration
+  }
 }
 
 resource "aws_apigatewayv2_route" "lambda_route" {
