@@ -47,7 +47,7 @@ resource "aws_apigatewayv2_integration" "load_balancer_integration" {
   integration_method = "ANY"
 
    request_parameters = {
-    "request.querystring.proxy" = "$request.querystring.proxy"
+    "type" = "$request.path.type"
   }
 }
 
