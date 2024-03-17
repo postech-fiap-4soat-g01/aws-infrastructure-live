@@ -22,8 +22,15 @@ Como toda a infraestrutura está nesse projeto alguns recursos dependem de recur
 ### Run 1
 Necessário acessar as variables.tf da pasta root e colocar o valor da variável create_lambda como false, fazendo isso é possível aplicar a run inicial.
 
+ATENÇÃO:
+* create_lambda = false
+
 ### Run 2
-Para essa funcionar corretamente é necessário alterar o create_lambda para true e também atualizar o value da variável integration_uri_lb, sendo esse o valor do DNS Name do load balancer que foi criado no workflow do repositório do monolito.
+Para essa funcionar corretamente é necessário alterar o create_lambda para true e também atualizar o value da variável *integration_uri_lb*, sendo esse o valor do DNS Name do load balancer que foi criado no workflow do repositório do monolito.
+
+ATENÇÃO:
+* create_lambda = true
+* integration_uri_lb com valor do DNS Name do load balancer
 
 ## Diagrama dos recursos
 
