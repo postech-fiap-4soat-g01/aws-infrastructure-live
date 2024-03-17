@@ -32,6 +32,12 @@ ATENÇÃO:
 * create_lambda = true
 * integration_uri_lb com valor do DNS Name do load balancer
 
+Fluxo:
+* RUN 1 do terraform (create_lambda = false)
+* Alterações necessárias nos repositórios ([Monolito](https://github.com/postech-fiap-4soat-g01/FastFoodTotem) e [Lambda](https://github.com/postech-fiap-4soat-g01/FastFoodUserManagement))
+* Atualizar create_lambda e integration_uri_lb
+* RUN 2
+
 ## Diagrama dos recursos
 
 ![Diagrama](graph.png)
