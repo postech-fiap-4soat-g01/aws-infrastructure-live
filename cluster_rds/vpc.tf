@@ -51,6 +51,13 @@ resource "aws_security_group" "rds_sg" {
     cidr_blocks = ["0.0.0.0/0"]
     
   }
+
+    egress {
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
 }
 
 # Retrieve the Auto Scaling Group associated with the EKS nodes
