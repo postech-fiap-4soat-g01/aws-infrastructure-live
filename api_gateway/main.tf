@@ -85,6 +85,12 @@ resource "aws_apigatewayv2_integration" "load_balancer_integration" {
   connection_type   = "INTERNET"
   description       = "Integration to EKS load balancer"
   integration_method = "ANY"  # Allow all HTTP methods
+
+  request_parameters = {
+    "integration.request.path.proxy"           = "method.request.path.proxy"
+    "integration.request.header.Accept"        = "'application/json'"
+    "integration.request.header.Authorization" = "method.request.header.Authorization"
+  }
 }
 
 ##################################### ROUTES
