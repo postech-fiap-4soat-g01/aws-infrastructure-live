@@ -38,31 +38,164 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
   payload_format_version = "2.0"
 }
 
-resource "aws_apigatewayv2_integration" "load_balancer_integration" {
-  api_id            = aws_apigatewayv2_api.ApiGateway.id
-  integration_type  = "HTTP_PROXY"
-  integration_uri   = var.integration_uri_lb
-  connection_type   = "INTERNET"
-  description       = "Integration to EKS load balancer"
+##################################### INTEGRATION ORDER
+
+resource "aws_apigatewayv2_integration" "load_balancer_integration_order" {
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  integration_type   = "HTTP_PROXY"
+  integration_uri    = "${var.integration_uri_lb}/v${var.api_version}/order"
+  connection_type    = "INTERNET"
   integration_method = "ANY"
 }
 
-##################################### ROUTES
-
-resource "aws_apigatewayv2_route" "load_balancer_route_order" {
-  depends_on         = [aws_apigatewayv2_integration.load_balancer_integration]
+resource "aws_apigatewayv2_integration" "load_balancer_integration_order_getbyid" {
   api_id             = aws_apigatewayv2_api.ApiGateway.id
-  route_key          = "ANY /v${var.api_version}/order/{proxy+}"
-  target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration.id}"
+  integration_type   = "HTTP_PROXY"
+  integration_uri    = "${var.integration_uri_lb}/v${var.api_version}/order/{id}"
+  connection_type    = "INTERNET"
+  integration_method = "ANY"
+}
+
+resource "aws_apigatewayv2_integration" "load_balancer_integration_order_getbystatus" {
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  integration_type   = "HTTP_PROXY"
+  integration_uri    = "${var.integration_uri_lb}/v${var.api_version}/order/filterByStatus/{id}"
+  connection_type    = "INTERNET"
+  integration_method = "ANY"
+}
+
+resource "aws_apigatewayv2_integration" "load_balancer_integration_order_getpendingorder" {
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  integration_type   = "HTTP_PROXY"
+  integration_uri    = "${var.integration_uri_lb}/v${var.api_version}/order/getPendingOrders"
+  connection_type    = "INTERNET"
+  integration_method = "ANY"
+}
+
+resource "aws_apigatewayv2_integration" "load_balancer_integration_order_getpaymentstatus" {
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  integration_type   = "HTTP_PROXY"
+  integration_uri    = "${var.integration_uri_lb}/v${var.api_version}/order/paymentStatus/{id}"
+  connection_type    = "INTERNET"
+  integration_method = "ANY"
+}
+
+resource "aws_apigatewayv2_integration" "load_balancer_integration_order_receivepayment" {
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  integration_type   = "HTTP_PROXY"
+  integration_uri    = "${var.integration_uri_lb}/v${var.api_version}/order/payment/{id}"
+  connection_type    = "INTERNET"
+  integration_method = "ANY"
+}
+
+##################################### ROUTES ORDER
+
+resource "aws_apigatewayv2_route" "load_balancer_route_order_" {
+  depends_on         = [aws_apigatewayv2_integration.load_balancer_integration_order]
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  route_key          = "ANY /v${var.api_version}/order"
+  target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration_order.id}"
   authorizer_id      = aws_apigatewayv2_authorizer.jwt_authorizer.id
   authorization_type = "JWT"
 }
 
-resource "aws_apigatewayv2_route" "load_balancer_route_product" {
-  depends_on         = [aws_apigatewayv2_integration.load_balancer_integration]
+resource "aws_apigatewayv2_route" "load_balancer_route_order_getbyid" {
+  depends_on         = [aws_apigatewayv2_integration.load_balancer_integration_order_getbyid]
   api_id             = aws_apigatewayv2_api.ApiGateway.id
-  route_key          = "ANY /v${var.api_version}/product/{proxy+}"
-  target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration.id}"
+  route_key          = "ANY /v${var.api_version}/order/{id}"
+  target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration_order_getbyid.id}"
+  authorizer_id      = aws_apigatewayv2_authorizer.jwt_authorizer.id
+  authorization_type = "JWT"
+}
+
+resource "aws_apigatewayv2_route" "load_balancer_route_order_getbystatus" {
+  depends_on         = [aws_apigatewayv2_integration.load_balancer_integration_order_getbystatus]
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  route_key          = "ANY /v${var.api_version}/order/filterByStatus/{id}"
+  target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration_order_getbystatus.id}"
+  authorizer_id      = aws_apigatewayv2_authorizer.jwt_authorizer.id
+  authorization_type = "JWT"
+}
+
+resource "aws_apigatewayv2_route" "load_balancer_route_order_getpendingorder" {
+  depends_on         = [aws_apigatewayv2_integration.load_balancer_integration_order_getpendingorder]
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  route_key          = "ANY /v${var.api_version}/order/getPendingOrders"
+  target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration_order_getpendingorder.id}"
+  authorizer_id      = aws_apigatewayv2_authorizer.jwt_authorizer.id
+  authorization_type = "JWT"
+}
+
+resource "aws_apigatewayv2_route" "load_balancer_route_order_getpaymentstatus" {
+  depends_on         = [aws_apigatewayv2_integration.load_balancer_integration_order_getpaymentstatus]
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  route_key          = "ANY /v${var.api_version}/order/paymentStatus/{id}"
+  target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration_order_getpaymentstatus.id}"
+  authorizer_id      = aws_apigatewayv2_authorizer.jwt_authorizer.id
+  authorization_type = "JWT"
+}
+
+resource "aws_apigatewayv2_route" "load_balancer_route_order_receivepayment" {
+  depends_on         = [aws_apigatewayv2_integration.load_balancer_integration_order_receivepayment]
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  route_key          = "ANY /v${var.api_version}/order/payment/{id}"
+  target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration_order_receivepayment.id}"
+  authorizer_id      = aws_apigatewayv2_authorizer.jwt_authorizer.id
+  authorization_type = "JWT"
+}
+
+
+##################################### INTEGRATION PRODUCT
+
+resource "aws_apigatewayv2_integration" "load_balancer_integration_product_post" {
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  integration_type   = "HTTP_PROXY"
+  integration_uri    = "${var.integration_uri_lb}/v${var.api_version}/product"
+  connection_type    = "INTERNET"
+  integration_method = "ANY"
+}
+
+resource "aws_apigatewayv2_integration" "load_balancer_integration_product_get" {
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  integration_type   = "HTTP_PROXY"
+  integration_uri    = "${var.integration_uri_lb}/v${var.api_version}/product/category/{id}"
+  connection_type    = "INTERNET"
+  integration_method = "ANY"
+}
+
+resource "aws_apigatewayv2_integration" "load_balancer_integration_product_delete" {
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  integration_type   = "HTTP_PROXY"
+  integration_uri    = "${var.integration_uri_lb}/v${var.api_version}/product/{id}"
+  connection_type    = "INTERNET"
+  integration_method = "ANY"
+}
+
+##################################### ROUTES PRODUCT
+
+resource "aws_apigatewayv2_route" "load_balancer_route_product_post" {
+  depends_on         = [aws_apigatewayv2_integration.load_balancer_integration_product_post]
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  route_key          = "ANY /v${var.api_version}/product"
+  target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration_product_post.id}"
+  authorizer_id      = aws_apigatewayv2_authorizer.jwt_authorizer.id
+  authorization_type = "JWT"
+}
+
+resource "aws_apigatewayv2_route" "load_balancer_route_product_GET" {
+  depends_on         = [aws_apigatewayv2_integration.load_balancer_integration_product_get]
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  route_key          = "ANY /v${var.api_version}/product/category/{id}"
+  target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration_product_get.id}"
+  authorizer_id      = aws_apigatewayv2_authorizer.jwt_authorizer.id
+  authorization_type = "JWT"
+}
+
+resource "aws_apigatewayv2_route" "load_balancer_route_product_delete" {
+  depends_on         = [aws_apigatewayv2_integration.load_balancer_integration_product_delete]
+  api_id             = aws_apigatewayv2_api.ApiGateway.id
+  route_key          = "ANY /v${var.api_version}/product/{id}"
+  target             = "integrations/${aws_apigatewayv2_integration.load_balancer_integration_product_delete.id}"
   authorizer_id      = aws_apigatewayv2_authorizer.jwt_authorizer.id
   authorization_type = "JWT"
 }

@@ -35,8 +35,13 @@ ATENÇÃO:
 Fluxo:
 * RUN 1 do terraform (create_lambda = false)
 * Alterações necessárias nos repositórios ([Monolito](https://github.com/postech-fiap-4soat-g01/FastFoodTotem) e [Lambda](https://github.com/postech-fiap-4soat-g01/FastFoodUserManagement))
-* Atualizar create_lambda e integration_uri_lb
-* RUN 2
+* 1ª alteração: mudar o endereço do registry do container no arquivo do ([Monolito](https://github.com/postech-fiap-4soat-g01/FastFoodTotem/blob/main/k8s/api-deployment.yaml)) para passar a pegar a imagem do local correto.
+* 2ª alteração: Mudar a connection string do banco no arquivo do ([Monolito](https://github.com/postech-fiap-4soat-g01/FastFoodTotem/blob/main/k8s/api-secret.yaml))
+* 3ª alteração: executar a action [Deploy to ECR](https://github.com/postech-fiap-4soat-g01/FastFoodTotem/actions/workflows/deploy.yaml) do monolito para subir a imagem para o registry e publicar no EKS.
+* 4ª alteração: executar a action [Deploy to ECR](https://github.com/postech-fiap-4soat-g01/FastFoodUserManagement/actions/workflows/deploy.yaml) da lambda para subir a imagem para o registry correto.
+* 5ª alteração: Atualizar create_lambda e integration_uri_lb do arquivo [variables.tf](https://github.com/postech-fiap-4soat-g01/aws-infrastructure-live/blob/main/variables.tf). Passar create_lambda = true e integration_uri_lb = ao load balancer criado pelo EKS.
+* RUN 2 do terraform
+* 6ª alteração: Executar action  [Update Lambda](https://github.com/postech-fiap-4soat-g01/FastFoodUserManagement/actions/workflows/update-lambda.yaml) para atualizar a lambda com a imagem correta.
 
 ## Diagrama dos recursos
 
